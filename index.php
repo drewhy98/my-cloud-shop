@@ -12,14 +12,14 @@
             padding: 0;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             color: #333;
         }
 
         /* Header */
         .header {
-            background-color: #004d00;
+            background-color: #2c3e50; /* Matches register file */
             color: white;
             padding: 20px 40px;
             display: flex;
@@ -44,15 +44,15 @@
             transition: 0.3s;
         }
         .auth-buttons a.login {
-            background-color: #fff;
-            color: #004d00;
+            background-color: #007bff; /* Matches register button */
+            color: white;
         }
         .auth-buttons a.register {
-            background-color: #ffcc00;
-            color: #004d00;
+            background-color: #007bff;
+            color: white;
         }
         .auth-buttons a:hover {
-            opacity: 0.8;
+            background-color: #0056b3; /* Hover effect */
         }
 
         /* Hero Section */
@@ -116,7 +116,7 @@
             object-fit: cover;
         }
         .category-card h3 {
-            color: #004d00;
+            color: #2c3e50; /* Matches header */
             margin: 15px 0 10px;
         }
         .category-card p {
@@ -127,19 +127,19 @@
         .category-card a {
             margin: 15px 0 20px;
             padding: 10px 20px;
-            background-color: #004d00;
+            background-color: #007bff; /* Matches register button */
             color: white;
             text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.3s;
         }
         .category-card a:hover {
-            background-color: #003300;
+            background-color: #0056b3;
         }
 
         /* Footer */
         footer {
-            background-color: #004d00;
+            background-color: #2c3e50; /* Matches header */
             color: white;
             text-align: center;
             padding: 20px;
@@ -152,8 +152,8 @@
     <!-- Header -->
     <div class="header">
         <div>
-            <h1>GolfShop</h1>
-            <p>Clubs, Clothing & Accessories</p>
+            <h1>Golf ShopSphere</h1>
+            <p>Golf Clubs, Clothing & Accessories</p>
         </div>
         <div class="auth-buttons">
             <a href="login.php" class="login">Log In</a>
@@ -164,8 +164,8 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h2>Upgrade Your Game</h2>
-            <p>Shop the latest golf clubs, apparel, and accessories.</p>
+            <h2>Upgrade Your Golf Game</h2>
+            <p>Shop the latest Golf Clubs, Clothes, and Accessories.</p>
         </div>
     </section>
 
@@ -176,19 +176,19 @@
             <div class="category-card">
                 <img src="images/clubs.jpg" alt="Golf Clubs">
                 <h3>Clubs</h3>
-                <p>Drivers, irons, putters, and more for all skill levels.</p>
+                <p>Drivers, Irons, Putters.</p>
                 <a href="clubs.php">Shop Clubs</a>
             </div>
             <div class="category-card">
                 <img src="images/clothing.jpg" alt="Golf Clothing">
                 <h3>Clothing</h3>
-                <p>Polo shirts, pants, shoes, and golf apparel for men and women.</p>
+                <p>Polo Shirts, Trousers, Shoes, and Golf Apparel</p>
                 <a href="clothing.php">Shop Clothing</a>
             </div>
             <div class="category-card">
                 <img src="images/accessories.jpg" alt="Golf Accessories">
                 <h3>Accessories</h3>
-                <p>Gloves, balls, tees, bags, and all essential golf gear.</p>
+                <p>Balls, Tees, Bags, and all essential golf gear.</p>
                 <a href="accessories.php">Shop Accessories</a>
             </div>
         </div>
@@ -196,7 +196,7 @@
 
     <!-- Footer -->
     <footer>
-        &copy; 2025 GolfShop. All rights reserved.
+        &copy; 2025 Drew's GolfShop. All rights reserved.
     </footer>
 
 </body>
