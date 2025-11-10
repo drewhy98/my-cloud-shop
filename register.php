@@ -3,47 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register - MyShop</title>
+  <title>Register - ShopSphere</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #fafafa;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
       flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
     }
 
+    /* Header */
     .header {
-      background-color: #2c3e50;
-      color: white;
-      padding: 20px 0;
-      text-align: center;
-      position: fixed;
-      top: 0;
+      background-color: #ffffff;
+      color: #2e5d34;
       width: 100%;
+      text-align: center;
+      padding: 25px 0;
+      border-bottom: 1px solid #e0e0e0;
+      position: sticky;
+      top: 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
 
+    .header h1 {
+      font-family: 'Georgia', serif;
+      margin: 0;
+      font-size: 2em;
+    }
+
+    .header p {
+      font-size: 1em;
+      margin-top: 5px;
+      color: #2e5d34;
+    }
+
+    /* Register form */
     .register-form {
       background: white;
-      padding: 30px;
+      padding: 35px;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       width: 100%;
-      max-width: 400px;
-      margin-top: 100px;
+      max-width: 420px;
+      margin-top: 60px;
+    }
+
+    .register-form h2 {
+      text-align: center;
+      color: #2e5d34;
+      font-family: 'Georgia', serif;
+      margin-bottom: 20px;
     }
 
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 18px;
     }
 
     label {
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
       font-weight: bold;
+      color: #2e5d34;
     }
 
     input[type="text"],
@@ -51,40 +75,59 @@
     input[type="password"] {
       width: 100%;
       padding: 10px;
-      border: 1px solid #ddd;
+      border: 1px solid #ccc;
       border-radius: 4px;
       box-sizing: border-box;
+      font-size: 15px;
     }
 
     .btn {
-      background-color: #007bff;
+      background-color: #2e5d34;
       color: white;
-      padding: 10px 20px;
+      padding: 12px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
       width: 100%;
       font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s;
     }
 
     .btn:hover {
-      background-color: #0056b3;
+      background-color: #244928;
     }
 
     .error {
-      color: red;
-      padding: 10px;
-      margin: 10px 0;
+      color: #a94442;
       background-color: #f8d7da;
       border: 1px solid #f5c6cb;
       border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 15px;
       text-align: center;
+    }
+
+    p.link {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    p.link a {
+      color: #2e5d34;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    p.link a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
+
   <div class="header">
-    <h1>MyShop</h1>
+    <h1>ShopSphere</h1>
     <p>Create Your Account</p>
   </div>
 
@@ -98,7 +141,7 @@
       </div>
     <?php endif; ?>
 
-    <!-- Form submits to process_register.php -->
+    <!-- Registration Form -->
     <form method="post" action="process_register.php">
       <div class="form-group">
         <label>Full Name *</label>
@@ -120,7 +163,8 @@
       </div>
     </form>
 
-    <p style="text-align: center;"><a href="index.php">Back to Home</a></p>
+    <p class="link"><a href="index.php">← Back to Home</a></p>
   </div>
+
 </body>
 </html>
