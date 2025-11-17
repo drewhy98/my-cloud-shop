@@ -36,7 +36,7 @@ for ($i = 1; $i <= 100; $i++) {
         echo "Added user $i: $name ($email)\n<br>";
         sqlsrv_free_stmt($stmt);
     } else {
-        echo "Error adding user $i\n<br>";
+        echo "Error adding user $i: " . print_r(sqlsrv_errors(), true) . "\n<br>";
     }
     
     ob_flush();
