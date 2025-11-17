@@ -225,7 +225,7 @@ session_start();
           <button type="submit" class="logout-btn">Logout</button>
         </form>
       <?php else: ?>
-        <a href="login.php">Log In</a> | <a href="register.php">Sign Up</a> | <a href="add_users.php">Sign Up Automatically</a> | <a href="register.php">View Registered Users</a>
+        <a href="login.php">Log In</a> | <a href="register.php">Sign Up</a> | <a href="add_users.php">Sign Up Automatically</a> | <a href="display_users.php">View Registered Users</a>
       <?php endif; ?>
     </div>
   </header>
@@ -341,5 +341,6 @@ session_start();
 
 </body>
 </html>
+
 
 
