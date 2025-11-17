@@ -1,6 +1,6 @@
 <?php
 // Simple script to add 100 users - run from command line or browser
-$serverName = "tcp:drewcardiffmet.database.windows.net,1433";
+$serverName = "tcp:drewcardiffmet-replica.database.windows.net,1433";
 $connectionOptions = array(
     "Database" => "myDatabase",
     "Uid" => "myadmin", 
