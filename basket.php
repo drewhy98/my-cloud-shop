@@ -71,7 +71,7 @@ if ($stmt === false) {
         <p>Quantity: <?= $row['quantity']; ?></p>
         <p>Subtotal: £<?= number_format($subtotal, 2); ?></p>
 
-        <form method="post" action="remove_from_cart.php">
+        <form method="post" action="remove_from_basket.php">
             <input type="hidden" name="cart_id" value="<?= $row['cart_id']; ?>">
             <button class="btn">Remove</button>
         </form>
