@@ -1,6 +1,6 @@
 <?php 
 session_start(); 
-require_once "db_read.php"; // <-- uses  read-only replica
+require_once "db_read.php"; // <-- read-only replica
 ?>
 
 <!DOCTYPE html>
@@ -178,22 +178,25 @@ require_once "db_read.php"; // <-- uses  read-only replica
 <div class="products-grid">
 
 <?php
-// Query
-$sql = "SELECT id, name, price, image_url FROM products WHERE category = 'meat' ORDER BY created_at DESC";
+// Query meat products
+$sql = "SELECT id, name, price, image_url 
+        FROM products 
+        WHERE LOWER(category) = 'meat'
+        ORDER BY created_at DESC";
 $stmt = sqlsrv_query($conn, $sql);
 
 if ($stmt === false) {
     echo "<p>Error: Could not retrieve products.</p>";
-}
-
-// Loop through meat items
-while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)):
+} else {
+    $hasProducts = false;
+    while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)):
+        $hasProducts = true;
+        $image = !empty($row['image_url']) ? htmlspecialchars($row['image_url']) : "placeholder.png";
 ?>
 
     <div class="product-card">
 
-        <!-- Fallback if no image exists -->
-        <img src="<?= htmlspecialchars($row['image_url'] ?? 'placeholder.png'); ?>" alt="<?= htmlspecialchars($row['name']); ?>">
+        <img src="<?= $image ?>" alt="<?= htmlspecialchars($row['name']); ?>">
 
         <h4><?= htmlspecialchars($row['name']); ?></h4>
         <p>£<?= number_format($row['price'], 2); ?></p>
@@ -212,7 +215,14 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)):
 
     </div>
 
-<?php endwhile; ?>
+<?php
+    endwhile;
+
+    if (!$hasProducts) {
+        echo "<p style='grid-column: 1 / -1; text-align:center;'>No meat products found.</p>";
+    }
+}
+?>
 
 </div>
 
