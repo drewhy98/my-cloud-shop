@@ -92,6 +92,11 @@ if ($stmt === false) {
     <div class="total">
         Total Cost: £<?= number_format($total, 2); ?>
     </div>
+
+    <!-- Pay Now button -->
+    <form method="post" action="pay.php">
+        <button type="submit" class="btn pay-now">Pay Now</button>
+    </form>
 <?php endif; ?>
 
 <footer>
