@@ -230,18 +230,18 @@ session_start();
         <?php else: ?>
             <a href="login.php">Log In</a> |
             <a href="register.php">Sign Up</a> |
-            <a href="add_users.php">Sign Up Automatically</a> |
+          //  <a href="add_users.php">Sign Up Automatically</a> |
             <a href="display_users.php">View Registered Users</a> |
-            <a href="test_replication_lag.php">Test DB Replication</a>
+          //  <a href="test_replication_lag.php">Test DB Replication</a>
         <?php endif; ?>
     </div>
 </header>
 
 <nav>
-    <a href="display_meat.php">View All Meat</a>
-    <a href="display_veg.php">View all Vegetables</a>
-    <a href="display_bakery.php">View all Bakery</a>
-     <a href="display_products.php">View all Products</a>
+    <a href="display_meat.php">Meat</a>
+    <a href="display_veg.php">Vegetables</a>
+    <a href="display_bakery.php">Bakery</a>
+    <a href="display_products.php">View all Products</a>
 </nav>
 
 <!-- MAIN FEATURED -->
@@ -260,4 +260,5 @@ session_start();
 
 </body>
 </html>
+
 
