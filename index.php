@@ -226,13 +226,15 @@ session_start();
             <span>Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
             <form method="post" action="logout.php" style="display:inline;">
                 <button type="submit" class="logout-btn">Logout</button>
+                <a href="wishlist.php">View Wishlist</a> |
+                <a href="basket.php">View Basket</a> |
             </form>
         <?php else: ?>
             <a href="login.php">Log In</a> |
             <a href="register.php">Sign Up</a> |
-          //  <a href="add_users.php">Sign Up Automatically</a> |
+          <!--  <a href="add_users.php">Sign Up Automatically</a> | -->
             <a href="display_users.php">View Registered Users</a> |
-          //  <a href="test_replication_lag.php">Test DB Replication</a>
+          <!--  <a href="test_replication_lag.php">Test DB Replication</a> -->
         <?php endif; ?>
     </div>
 </header>
@@ -260,5 +262,6 @@ session_start();
 
 </body>
 </html>
+
 
 
