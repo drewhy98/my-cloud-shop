@@ -179,7 +179,7 @@ require_once "db_read.php"; // <-- uses  read-only replica
 
 <?php
 // Query
-$sql = "SELECT name, price, image_url FROM products WHERE category = 'meat' ORDER BY created_at DESC";
+$sql = "SELECT id, name, price, image_url FROM products WHERE category = 'meat' ORDER BY created_at DESC";
 $stmt = sqlsrv_query($conn, $sql);
 
 if ($stmt === false) {
