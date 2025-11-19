@@ -238,9 +238,10 @@ session_start();
 </header>
 
 <nav>
-    <a href="#meat">Meat</a>
-    <a href="#veg">Vegetables</a>
-    <a href="#bakery">Bakery</a>
+    <a href="display_meat.php">View All Meat</a>
+    <a href="display_veg.php">View all Vegetables</a>
+    <a href="display_bakery.php">View all Bakery</a>
+     <a href="display_products.php">View all Products</a>
 </nav>
 
 <!-- MAIN FEATURED -->
@@ -249,124 +250,6 @@ session_start();
     <img src="https://learn.surlatable.com/wp-content/uploads/2022/12/Tips-for-planning-your-Christmas-dinner.jpg"
          alt="Christmas Dinner">
 </section>
-
-<!-- FEATURED MEAT -->
-<section class="sub-featured" id="meat">
-    <h3>Meat</h3>
-
-    <div class="products">
-
-        <div class="product">
-            <img src="https://www.cookingclassy.com/wp-content/uploads/2017/12/honey-glazed-ham-4.jpg" alt="Honey Roast Ham">
-            <h4>Honey Roast Ham</h4>
-            <p>£24.99 / joint</p>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product">
-            <img src="https://www.inspiredtaste.net/wp-content/uploads/2023/11/Roasted-Turkey-Recipe-1-1200.jpg" alt="Roast Turkey">
-            <h4>Roast Turkey</h4>
-            <p>£39.99 / bird</p>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product">
-            <img src="https://www.tasteofhome.com/wp-content/uploads/2025/01/Herb-Crusted-Roast-Beef_EXPS_FT25_9187_EC_0108_1.jpg"
-                 alt="Roast Beef">
-            <h4>Roast Beef</h4>
-            <p>£24.99 / joint</p>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product">
-            <img src="https://badleysbutchers.co.uk/cdn/shop/products/Whole_Chicken_6a5911ed-47a9-46fc-9bdf-437b968dfade.jpg?v=1577375639"
-                 alt="Chicken">
-            <h4>Chicken</h4>
-            <p>£19.99 / bird</p>
-            <button>Add to Cart</button>
-        </div>
-
-    </div>
-</section>
-
-<!-- FEATURED VEGETABLES -->
-<section class="sub-featured" id="veg">
-    <h3>Vegetables</h3>
-
-    <div class="products">
-
-        <div class="product">
-            <img src="https://www.closetcooking.com/wp-content/uploads/2023/11/Honey-Balsamic-Roasted-Carrots-1200-1969.jpg"
-                 alt="Carrots">
-            <h4>Carrots</h4>
-            <p>£1.99 / kg</p>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product">
-            <img src="https://healthylivingjames.co.uk/wp-content/uploads/2024/07/Air-Fryer-Tenderstem-Broccoli-Square.jpg"
-                 alt="Tenderstem Broccoli">
-            <h4>Tenderstem Broccoli</h4>
-            <p>£1.99 / kg</p>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product">
-            <img src="https://tinandthyme.uk/wp-content/uploads/2023/01/Cooked-Brussels-Sprouts.jpg"
-                 alt="Brussel Sprouts">
-            <h4>Brussel Sprouts</h4>
-            <p>£2.50 / kg</p>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product">
-            <img src="https://www.allrecipes.com/thmb/FBpzlDkBGve3sv9KkapC0gTJTw8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/1221_MW021_jennifer-causey-2000-5776fb1d3586436bb7c4d1453da299f6.jpg"
-                 alt="Parsnips">
-            <h4>Parsnips</h4>
-            <p>£2.20 / kg</p>
-            <button>Add to Cart</button>
-        </div>
-
-    </div>
-</section>
-
-<!-- FEATURED BAKERY -->
-<section class="sub-featured" id="bakery">
-    <h3>Bakery</h3>
-
-    <div class="products">
-
-        <div class="product">
-            <img src="https://ichef.bbci.co.uk/food/ic/food_16x9_832/recipes/classic_christmas_cake_04076_16x9.jpg"
-                 alt="Christmas Cake">
-            <h4>Christmas Cake</h4>
-            <p>£14.99 each</p>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product">
-            <img src="https://culinaryginger.com/wp-content/uploads/Christmas-Sweet-Mince-Pies-7.jpg"
-                 alt="Mince Pies">
-            <h4>Mince Pies</h4>
-            <p>£3.99 / 12 pack</p>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product">
-            <img src="https://horizon.com/wp-content/uploads/recipe-cin-roll-hero.jpg"
-                 alt="Cinnamon Rolls">
-            <h4>Cinnamon Rolls</h4>
-            <p>£2.99 / 4 pack</p>
-            <button>Add to Cart</button>
-        </div>
-
-        <div class="product">
-            <img src="https://sarahsvegankitchen.com/wp-content/uploads/2024/05/Vegan-Croissants-1.jpg"
-                 alt="Croissants">
-            <h4>Croissants</h4>
-            <p>£1.99 / 6 pack</p>
-            <button>Add to Cart</button>
-        </div>
 
     </div>
 </section>
@@ -377,3 +260,4 @@ session_start();
 
 </body>
 </html>
+
