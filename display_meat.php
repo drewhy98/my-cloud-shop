@@ -1,6 +1,6 @@
 <?php 
 session_start(); 
-require_once "db_read.php"; // <-- read-only replica
+require_once "db_read.php"; // <-- uses read-only replica
 ?>
 
 <!DOCTYPE html>
@@ -18,10 +18,7 @@ require_once "db_read.php"; // <-- read-only replica
             color: #333;
             line-height: 1.6;
         }
-
-        h1, h2, h3, h4 {
-            font-family: 'Georgia', serif;
-        }
+        h1, h2, h3, h4 { font-family: 'Georgia', serif; }
 
         header {
             background-color: #ffffff;
@@ -32,29 +29,9 @@ require_once "db_read.php"; // <-- read-only replica
             justify-content: space-between;
             align-items: center;
         }
-
-        header h1 {
-            color: #2e5d34;
-            font-size: 1.8em;
-            margin: 0;
-        }
-
-        .auth-links a, .auth-links span {
-            color: #2e5d34;
-            font-weight: bold;
-            margin-left: 12px;
-            text-decoration: none;
-        }
-
-        .logout-btn {
-            background-color: #2e5d34;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+        header h1 { color: #2e5d34; font-size: 1.8em; margin: 0; }
+        .auth-links a, .auth-links span { color: #2e5d34; font-weight: bold; margin-left: 12px; text-decoration: none; }
+        .logout-btn { background-color: #2e5d34; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
 
         nav {
             background-color: #f2f5f1;
@@ -65,20 +42,9 @@ require_once "db_read.php"; // <-- read-only replica
             flex-wrap: wrap;
             border-bottom: 1px solid #ddd;
         }
+        nav a { color: #2e5d34; font-weight: 600; font-size: 0.95em; text-decoration: none; }
 
-        nav a {
-            color: #2e5d34;
-            font-weight: 600;
-            font-size: 0.95em;
-            text-decoration: none;
-        }
-
-        .page-title {
-            text-align: center;
-            margin: 40px 0 10px;
-            color: #2e5d34;
-            font-size: 2em;
-        }
+        .page-title { text-align: center; margin: 40px 0 10px; color: #2e5d34; font-size: 2em; }
 
         .products-grid {
             max-width: 1200px;
@@ -97,27 +63,10 @@ require_once "db_read.php"; // <-- read-only replica
             text-align: center;
             transition: box-shadow 0.2s;
         }
-
-        .product-card:hover {
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: contain;
-            background: #fafafa;
-            border-radius: 5px;
-        }
-
-        .product-card h4 {
-            color: #2e5d34;
-            margin: 10px 0 5px;
-        }
-
-        .product-card p {
-            color: #555;
-        }
+        .product-card:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.08); }
+        .product-card img { width: 100%; height: 180px; object-fit: contain; background: #fafafa; border-radius: 5px; }
+        .product-card h4 { color: #2e5d34; margin: 10px 0 5px; }
+        .product-card p { color: #555; }
 
         .btn {
             background-color: #2e5d34;
@@ -128,10 +77,7 @@ require_once "db_read.php"; // <-- read-only replica
             cursor: pointer;
             margin-top: 6px;
         }
-
-        .btn:hover {
-            background-color: #244928;
-        }
+        .btn:hover { background-color: #244928; }
 
         footer {
             margin-top: 50px;
@@ -183,7 +129,7 @@ $sql = "SELECT id, name, price, image_url
         FROM products 
         WHERE LOWER(category) = 'meat'
         ORDER BY created_at DESC";
-$stmt = sqlsrv_query($conn, $sql);
+$stmt = sqlsrv_query($conn_read, $sql);
 
 if ($stmt === false) {
     echo "<p>Error: Could not retrieve products.</p>";
@@ -232,7 +178,7 @@ if ($stmt === false) {
 
 <?php 
 sqlsrv_free_stmt($stmt);
-sqlsrv_close($conn);
+sqlsrv_close($conn_read);
 ?>
 </body>
 </html>
