@@ -1,5 +1,9 @@
 <?php
 // index.php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 include "db_read.php"; // <-- your read-replica connection
 
@@ -283,3 +287,4 @@ function getProducts($conn, $category) {
 
 </body>
 </html>
+
