@@ -1,6 +1,13 @@
 <?php
-// index.php — ShopSphere Supermarket Homepage
+// index.php
 session_start();
+include "db_read.php"; // <-- your read-replica connection
+
+// Function to fetch products by category
+function getProducts($conn, $category) {
+    $sql = "SELECT id, name, price FROM products WHERE category = ?";
+    return sqlsrv_query($conn, $sql, [$category]);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,6 +15,7 @@ session_start();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ShopSphere - Christmas Dinner Specials</title>
+
   <style>
     body {
       font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -34,7 +42,6 @@ session_start();
     header h1 {
       color: #2e5d34;
       font-size: 1.8em;
-      letter-spacing: 1px;
       margin: 0;
     }
 
@@ -45,10 +52,6 @@ session_start();
       text-decoration: none;
     }
 
-    .auth-links a:hover {
-      text-decoration: underline;
-    }
-
     .logout-btn {
       background-color: #2e5d34;
       color: white;
@@ -56,40 +59,6 @@ session_start();
       padding: 5px 10px;
       border-radius: 4px;
       cursor: pointer;
-      font-weight: bold;
-    }
-
-    .logout-btn:hover {
-      background-color: #244928;
-    }
-
-    .search-bar {
-      display: flex;
-      align-items: center;
-      flex-grow: 1;
-      justify-content: center;
-      margin: 10px 0;
-    }
-
-    .search-bar input {
-      width: 60%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px 0 0 4px;
-      outline: none;
-    }
-
-    .search-bar button {
-      background-color: #2e5d34;
-      border: none;
-      color: white;
-      padding: 8px 16px;
-      border-radius: 0 4px 4px 0;
-      cursor: pointer;
-    }
-
-    .search-bar button:hover {
-      background-color: #244928;
     }
 
     nav {
@@ -98,7 +67,6 @@ session_start();
       display: flex;
       justify-content: center;
       gap: 35px;
-      flex-wrap: wrap;
       border-bottom: 1px solid #ddd;
     }
 
@@ -109,22 +77,10 @@ session_start();
       text-decoration: none;
     }
 
-    nav a:hover {
-      border-bottom: 2px solid #2e5d34;
-    }
-
     .featured {
       max-width: 1100px;
       margin: 50px auto 20px auto;
       text-align: center;
-    }
-
-    .featured h2 {
-      color: #2e5d34;
-      border-bottom: 2px solid #2e5d34;
-      display: inline-block;
-      padding-bottom: 5px;
-      margin-bottom: 15px;
     }
 
     .featured img {
@@ -132,7 +88,6 @@ session_start();
       max-height: 420px;
       object-fit: cover;
       border-radius: 10px;
-      margin-bottom: 10px;
     }
 
     .sub-featured {
@@ -169,13 +124,6 @@ session_start();
       box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     }
 
-    .product img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 5px;
-    }
-
     .product h4 {
       color: #2e5d34;
       font-size: 1.1em;
@@ -194,10 +142,8 @@ session_start();
       padding: 8px 14px;
       border-radius: 4px;
       cursor: pointer;
-    }
-
-    .product button:hover {
-      background-color: #244928;
+      margin-top: 5px;
+      width: 100%;
     }
 
     footer {
@@ -210,138 +156,130 @@ session_start();
     }
   </style>
 </head>
+
 <body>
 
-  <header>
-    <h1>ShopSphere</h1>
-    <form class="search-bar" method="get" action="#">
-      <input type="text" name="search" placeholder="Search Stock...">
-      <button type="submit">Search</button>
-    </form>
-    <div class="auth-links">
-      <?php if (isset($_SESSION['user_name'])): ?>
-        <span>Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
-        <form method="post" action="logout.php" style="display:inline;">
-          <button type="submit" class="logout-btn">Logout</button>
+<header>
+  <h1>ShopSphere</h1>
+
+  <div class="auth-links">
+    <?php if (isset($_SESSION['user_name'])): ?>
+      <span>Welcome, <?= htmlspecialchars($_SESSION['user_name']) ?></span>
+      <form method="post" action="logout.php" style="display:inline;">
+        <button type="submit" class="logout-btn">Logout</button>
+      </form>
+    <?php else: ?>
+      <a href="login.php">Log In</a> |
+      <a href="register.php">Sign Up</a> |
+      <a href="add_users.php">Sign Up Automatically</a> |
+      <a href="display_users.php">View Registered Users</a> |
+      <a href="test_replication_lag.php">Test DB Replication</a>
+    <?php endif; ?>
+  </div>
+</header>
+
+<nav>
+  <a href="#meat">Meat</a>
+  <a href="#veg">Vegetables</a>
+  <a href="#bakery">Bakery</a>
+</nav>
+
+<!-- FEATURED -->
+<section class="featured">
+  <h2>Featured This December</h2>
+  <img src="https://learn.surlatable.com/wp-content/uploads/2022/12/Tips-for-planning-your-Christmas-dinner.jpg" alt="Christmas Dinner">
+</section>
+
+<!-- MEAT -->
+<section class="sub-featured" id="meat">
+  <h3>Meat</h3>
+  <div class="products">
+
+    <?php
+      $items = getProducts($conn_read, "meat");
+      while ($row = sqlsrv_fetch_array($items, SQLSRV_FETCH_ASSOC)):
+    ?>
+
+      <div class="product">
+        <h4><?= htmlspecialchars($row['name']) ?></h4>
+        <p>£<?= number_format($row['price'], 2) ?></p>
+
+        <form action="add_to_cart.php" method="post">
+          <input type="hidden" name="product_id" value="<?= $row['id'] ?>">
+          <button type="submit">Add to Cart</button>
         </form>
-      <?php else: ?>
-        <a href="login.php">Log In</a> | <a href="register.php">Sign Up</a> | <a href="add_users.php">Sign Up Automatically</a> | <a href="display_users.php">View Registered Users</a>| <a href="test_replication_lag.php">Test DB Replication</a>
-      <?php endif; ?>
-    </div>
-  </header>
 
-  <nav>
-    <a href="#meat">Meat</a>
-    <a href="#veg">Vegetables</a>
-    <a href="#bakery">Bakery</a>
-  </nav>
+        <form action="add_to_wishlist.php" method="post">
+          <input type="hidden" name="product_id" value="<?= $row['id'] ?>">
+          <button type="submit">❤️ Wishlist</button>
+        </form>
+      </div>
 
-  <!-- MAIN FEATURED -->
-  <section class="featured">
-    <h2>Featured This December</h2>
-    <img src="https://learn.surlatable.com/wp-content/uploads/2022/12/Tips-for-planning-your-Christmas-dinner.jpg" alt="Christmas Dinner">
-  </section>
+    <?php endwhile; ?>
+  </div>
+</section>
 
-  <!-- FEATURED MEAT -->
-  <section class="sub-featured" id="meat">
-    <h3>Meat</h3>
-    <div class="products">
-      <div class="product">
-        <img src="https://www.cookingclassy.com/wp-content/uploads/2017/12/honey-glazed-ham-4.jpg" alt="Honey Roast Ham">
-        <h4>Honey Roast Ham</h4>
-        <p>£24.99 / joint</p>
-        <button>Add to Cart</button>
-      </div>
-      <div class="product">
-        <img src="https://www.inspiredtaste.net/wp-content/uploads/2023/11/Roasted-Turkey-Recipe-1-1200.jpg" alt="Roast Turkey">
-        <h4>Roast Turkey</h4>
-        <p>£39.99 / bird</p>
-        <button>Add to Cart</button>
-      </div>
-      <div class="product">
-        <img src="https://www.tasteofhome.com/wp-content/uploads/2025/01/Herb-Crusted-Roast-Beef_EXPS_FT25_9187_EC_0108_1.jpg" alt="Roast Beef">
-        <h4>Roast Beef</h4>
-        <p>£24.99 / joint</p>
-        <button>Add to Cart</button>
-      </div>
-      <div class="product">
-        <img src="https://badleysbutchers.co.uk/cdn/shop/products/Whole_Chicken_6a5911ed-47a9-46fc-9bdf-437b968dfade.jpg?v=1577375639" alt="Chicken">
-        <h4>Chicken</h4>
-        <p>£19.99 / bird</p>
-        <button>Add to Cart</button>
-      </div>
-    </div>
-  </section>
+<!-- VEGETABLES -->
+<section class="sub-featured" id="veg">
+  <h3>Vegetables</h3>
+  <div class="products">
 
-  <!-- FEATURED VEGETABLES -->
-  <section class="sub-featured" id="veg">
-    <h3>Vegetables</h3>
-    <div class="products">
-      <div class="product">
-        <img src="https://www.closetcooking.com/wp-content/uploads/2023/11/Honey-Balsamic-Roasted-Carrots-1200-1969.jpg" alt="Carrots">
-        <h4>Carrots</h4>
-        <p>£1.99 / kg</p>
-        <button>Add to Cart</button>
-      </div>
-      <div class="product">
-        <img src="https://healthylivingjames.co.uk/wp-content/uploads/2024/07/Air-Fryer-Tenderstem-Broccoli-Square.jpg" alt="Tenderstem Broccoli">
-        <h4>Tenderstem Broccoli</h4>
-        <p>£1.99 / kg</p>
-        <button>Add to Cart</button>
-      </div>
-      <div class="product">
-        <img src="https://tinandthyme.uk/wp-content/uploads/2023/01/Cooked-Brussels-Sprouts.jpg" alt="Brussel Sprouts">
-        <h4>Brussel Sprouts</h4>
-        <p>£2.50 / kg</p>
-        <button>Add to Cart</button>
-      </div>
-      <div class="product">
-        <img src="https://www.allrecipes.com/thmb/FBpzlDkBGve3sv9KkapC0gTJTw8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/1221_MW021_jennifer-causey-2000-5776fb1d3586436bb7c4d1453da299f6.jpg" alt="Parsnips">
-        <h4>Parsnips</h4>
-        <p>£2.20 / kg</p>
-        <button>Add to Cart</button>
-      </div>
-    </div>
-  </section>
+    <?php
+      $items = getProducts($conn_read, "veg");
+      while ($row = sqlsrv_fetch_array($items, SQLSRV_FETCH_ASSOC)):
+    ?>
 
-  <!-- FEATURED BAKERY -->
-  <section class="sub-featured" id="bakery">
-    <h3>Bakery</h3>
-    <div class="products">
       <div class="product">
-        <img src="https://ichef.bbci.co.uk/food/ic/food_16x9_832/recipes/classic_christmas_cake_04076_16x9.jpg" alt="Christmas Cake">
-        <h4>Christmas Cake</h4>
-        <p>£14.99 each</p>
-        <button>Add to Cart</button>
-      </div>
-      <div class="product">
-        <img src="https://culinaryginger.com/wp-content/uploads/Christmas-Sweet-Mince-Pies-7.jpg" alt="Mince Pies">
-        <h4>Mince Pies</h4>
-        <p>£3.99 / 12 pack</p>
-        <button>Add to Cart</button>
-      </div>
-      <div class="product">
-        <img src="https://horizon.com/wp-content/uploads/recipe-cin-roll-hero.jpg" alt="Cinnamon Rolls">
-        <h4>Cinnamon Rolls</h4>
-        <p>£2.99 / 4 pack</p>
-        <button>Add to Cart</button>
-      </div>
-      <div class="product">
-        <img src="https://sarahsvegankitchen.com/wp-content/uploads/2024/05/Vegan-Croissants-1.jpg" alt="Croissants">
-        <h4>Croissants</h4>
-        <p>£1.99 / 6 pack</p>
-        <button>Add to Cart</button>
-      </div>
-    </div>
-  </section>
+        <h4><?= htmlspecialchars($row['name']) ?></h4>
+        <p>£<?= number_format($row['price'], 2) ?></p>
 
-  <footer>
-    <p>&copy; 2025 ShopSphere | Fresh, Local & Healthy</p>
-  </footer>
+        <form action="add_to_cart.php" method="post">
+          <input type="hidden" name="product_id" value="<?= $row['id'] ?>">
+          <button type="submit">Add to Cart</button>
+        </form>
+
+        <form action="add_to_wishlist.php" method="post">
+          <input type="hidden" name="product_id" value="<?= $row['id'] ?>">
+          <button type="submit">❤️ Wishlist</button>
+        </form>
+      </div>
+
+    <?php endwhile; ?>
+  </div>
+</section>
+
+<!-- BAKERY -->
+<section class="sub-featured" id="bakery">
+  <h3>Bakery</h3>
+  <div class="products">
+
+    <?php
+      $items = getProducts($conn_read, "bakery");
+      while ($row = sqlsrv_fetch_array($items, SQLSRV_FETCH_ASSOC)):
+    ?>
+
+      <div class="product">
+        <h4><?= htmlspecialchars($row['name']) ?></h4>
+        <p>£<?= number_format($row['price'], 2) ?></p>
+
+        <form action="add_to_cart.php" method="post">
+          <input type="hidden" name="product_id" value="<?= $row['id'] ?>">
+          <button type="submit">Add to Cart</button>
+        </form>
+
+        <form action="add_to_wishlist.php" method="post">
+          <input type="hidden" name="product_id" value="<?= $row['id'] ?>">
+          <button type="submit">❤️ Wishlist</button>
+        </form>
+      </div>
+
+    <?php endwhile; ?>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 ShopSphere | Fresh, Local & Healthy</p>
+</footer>
 
 </body>
 </html>
-
-
-
-
