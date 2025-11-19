@@ -125,7 +125,7 @@ require_once "db_read.php"; // <-- uses read-only replica
 
 <?php
 // Query meat products
-$sql = "SELECT id, name, price, image_url 
+$sql = "SELECT product_id, name, price, image_url 
         FROM products 
         WHERE LOWER(category) = 'meat'
         ORDER BY created_at DESC";
