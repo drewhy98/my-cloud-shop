@@ -173,12 +173,15 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 <nav>
     <a href="admin_view_products.php">Manage Products</a>
     <a href="admin_view_orders.php">Manage Orders</a>
+    <a href="add_users.php">Sign Customers Up Automatically</a> | -->
+    <a href="display_users.php">View Registered Customers</a> |
+    <!--  <a href="test_replication_lag.php">Test DB Replication</a> -->
 </nav>
 
 <section class="featured">
     <h2>Admin Dashboard</h2>
-    <img src="https://learn.surlatable.com/wp-content/uploads/2022/12/Tips-for-planning-your-Christmas-dinner.jpg"
-         alt="Christmas Dinner">
+    <img src="https://www.sfdcpoint.com/wp-content/uploads/2019/01/Salesforce-Admin-Interview-questions.png"
+         alt="admin">
 </section>
 
 <footer>
