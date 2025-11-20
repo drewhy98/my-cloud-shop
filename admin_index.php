@@ -173,14 +173,14 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 <nav>
     <a href="admin_view_products.php">Manage Products</a>
     <a href="admin_view_orders.php">Manage Orders</a>
-    <a href="add_users.php">Sign Customers Up Automatically</a> | -->
+    <a href="add_users.php">Sign Customers Up Automatically</a>
     <a href="display_users.php">View Registered Customers</a> |
     <!--  <a href="test_replication_lag.php">Test DB Replication</a> -->
 </nav>
 
 <section class="featured">
     <h2>Admin Dashboard</h2>
-    <img src="https://www.sfdcpoint.com/wp-content/uploads/2019/01/Salesforce-Admin-Interview-questions.png"
+    <img src="https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg"
          alt="admin">
 </section>
 
