@@ -87,13 +87,6 @@ $user_id = $_SESSION['user_id'];
     </div>
 </header>
 
-<nav>
-    <a href="index.php">Home</a>
-    <a href="display_meat.php">Meat</a>
-    <a href="display_veg.php">Vegetables</a>
-    <a href="display_bakery.php">Bakery</a>
-</nav>
-
 <h2 style="text-align:center; margin:40px 0; color:#2e5d34;">My Wishlist</h2>
 
 <div class="products-grid">
