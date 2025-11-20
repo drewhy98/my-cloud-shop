@@ -231,8 +231,9 @@ session_start();
                 <a href="view_orders.php">View Orders</a> |
             </form>
         <?php else: ?>
-            <a href="login.php">Log In</a> |
-            <a href="register.php">Sign Up</a> |
+            <a href="login.php">Customer Log In</a> |
+            <a href="register.php">Customer Sign Up</a> |
+            <a href="admin_login.php">Admin Log In</a> |
           <!--  <a href="add_users.php">Sign Up Automatically</a> | -->
             <a href="display_users.php">View Registered Users</a> |
           <!--  <a href="test_replication_lag.php">Test DB Replication</a> -->
@@ -263,6 +264,7 @@ session_start();
 
 </body>
 </html>
+
 
 
 
