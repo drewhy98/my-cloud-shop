@@ -149,12 +149,12 @@ if ($stmt === false) {
 
         <?php if (isset($_SESSION['user_name'])): ?>
             <form method="post" action="add_to_cart.php">
-                <input type="hidden" name="product_id" value="<?= $row['id']; ?>">
+                <input type="hidden" name="product_id" value="<?= $row['product_id']; ?>">
                 <button class="btn">Add to Cart</button>
             </form>
 
             <form method="post" action="add_to_wishlist.php">
-                <input type="hidden" name="product_id" value="<?= $row['id']; ?>">
+                <input type="hidden" name="product_id" value="<?= $row['product_id']; ?>">
                 <button class="btn">Add to Wishlist</button>
             </form>
         <?php endif; ?>
