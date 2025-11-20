@@ -66,7 +66,7 @@ button:hover { background:#244928; }
 <nav>
     <a href="admin_index.php">Dashboard</a>
     <a href="admin_view_orders.php">Manage Orders</a>
-    <a href="admin_display_products.php">Manage Products</a>
+    <a href="admin_view_products.php">Manage Products</a>
 </nav>
 
 <div class="container">
