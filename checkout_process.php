@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "Your basket is empty.";
         } else {
 
-            // 🔥 FIX: Insert order and capture ID using OUTPUT INSERTED.order_id
+            // Insert order and capture ID
             $sql_order = "
                 INSERT INTO orders (user_id, total_amount, address, payment_method, status)
                 OUTPUT INSERTED.order_id
@@ -94,7 +94,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>Order Confirmation - ShopSphere</title>
 <style>
 body { font-family: Arial, sans-serif; background:#fafafa; margin:0; }
-header, footer { background:#f2f5f1; padding:15px; text-align:center; }
 h1, h2 { color:#2e5d34; }
 .container { max-width:800px; margin:30px auto; background:white; padding:20px; border-radius:8px; }
 table { width:100%; border-collapse: collapse; margin-top:15px; }
@@ -102,13 +101,12 @@ th, td { border:1px solid #ccc; padding:10px; }
 th { background:#2e5d34; color:white; }
 .total { text-align:right; font-weight:bold; margin-top:10px; }
 .error { color:red; font-weight:bold; }
+footer { background:#f2f5f1; padding:15px; text-align:center; }
 </style>
 </head>
 <body>
 
-<header>
-    <h1>Checkout</h1>
-</header>
+<?php include "header_nav.php"; ?>
 
 <div class="container">
 
