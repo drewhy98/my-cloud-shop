@@ -84,7 +84,7 @@ if ($stmt !== false) {
     <h2>Total Cost: £<?= number_format($total, 2); ?></h2>
 
     <?php if ($total > 0): ?>
-        <form method="post" action="pay.php">
+        <form method="post" action="checkout.php">
             <button type="submit" class="btn">Pay Now</button>
         </form>
     <?php endif; ?>
