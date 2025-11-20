@@ -1,5 +1,7 @@
 <?php
-// Database connection settings (same as register)
+session_start();
+
+// Database connection settings
 $serverName = "tcp:drewcardiffmet.database.windows.net,1433";
 $connectionOptions = array(
     "Database" => "myDatabase",
@@ -9,69 +11,57 @@ $connectionOptions = array(
     "TrustServerCertificate" => 0
 );
 
-// Check if form submitted
+// Form submitted?
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
 
-    // Basic validation
     if (empty($email) || empty($password)) {
-        header("Location: login.php?error=" . urlencode("Please fill in all fields."));
+        header("Location: admin_login.php?error=" . urlencode("Please fill in all fields."));
         exit();
     }
 
-    // Connect to SQL Server
+    // Connect
     $conn = sqlsrv_connect($serverName, $connectionOptions);
 
     if (!$conn) {
-        $errors = sqlsrv_errors();
-        $msg = "Database connection failed: ";
-        if ($errors != null) {
-            foreach ($errors as $error) {
-                $msg .= $error['message'];
-            }
-        }
-        header("Location: admin_login.php?error=" . urlencode($msg));
+        header("Location: admin_login.php?error=" . urlencode("Database connection error."));
         exit();
     }
 
-    // Fetch user by email
+    // Fetch admin by email
     $sql = "SELECT * FROM adminusers WHERE email = ?";
-    $params = array($email);
-    $stmt = sqlsrv_query($conn, $sql, $params);
+    $stmt = sqlsrv_query($conn, $sql, array($email));
 
     if ($stmt === false) {
-        $errors = sqlsrv_errors();
-        $msg = "Query error: ";
-        if ($errors != null) {
-            foreach ($errors as $error) {
-                $msg .= $error['message'];
-            }
-        }
-        header("Location: login.php?error=" . urlencode($msg));
+        header("Location: admin_login.php?error=" . urlencode("Query failure."));
         exit();
     }
 
-    $user = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+    $admin = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 
-    if ($user) {
-        // Verify password
-        if (password_verify($password, $user['password'])) {
-            // Start session
-            session_start();
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_name'] = $user['name'];
-            $_SESSION['user_email'] = $user['email'];
+    if ($admin) {
 
-            // Redirect to home (or dashboard)
-            header("Location: index.php");
+        if (password_verify($password, $admin['password'])) {
+
+            // Create admin session
+            $_SESSION['admin_logged_in'] = true;
+            $_SESSION['admin_id'] = $admin['id'];
+            $_SESSION['admin_name'] = $admin['name'];
+            $_SESSION['admin_email'] = $admin['email'];
+
+            // Redirect to admin index
+            header("Location: admin_index.php");
             exit();
+
         } else {
             header("Location: admin_login.php?error=" . urlencode("Incorrect password."));
             exit();
         }
+
     } else {
-        header("Location: admin_login.php?error=" . urlencode("No account found with that email."));
+        header("Location: admin_login.php?error=" . urlencode("Admin not found."));
         exit();
     }
 
@@ -79,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     sqlsrv_close($conn);
 
 } else {
-    // If accessed directly
     header("Location: admin_login.php");
     exit();
 }
