@@ -8,22 +8,21 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
+// Cast user_id and order_id to integers to avoid SQL Server type issues
+$user_id  = intval($_SESSION['user_id']);
+$order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
 
-// Get order_id from GET
-if (!isset($_GET['order_id']) || empty($_GET['order_id'])) {
+if ($order_id <= 0) {
     die("No order specified.");
 }
 
-$order_id = intval($_GET['order_id']);
-
-// Fetch order
+// Fetch order details
 $sql_order = "
     SELECT order_id, total_amount, address, payment_method, status
     FROM orders
-    WHERE order_id = ? AND user_id = ?
+    WHERE order_id = $order_id AND user_id = $user_id
 ";
-$stmt_order = sqlsrv_query($conn_read, $sql_order, [$order_id, $user_id]);
+$stmt_order = sqlsrv_query($conn_read, $sql_order);
 
 if ($stmt_order === false || ($order = sqlsrv_fetch_array($stmt_order, SQLSRV_FETCH_ASSOC)) === null) {
     die("Order not found.");
@@ -35,9 +34,9 @@ $sql_items = "
     SELECT p.name, oi.quantity, oi.price
     FROM order_items oi
     JOIN products p ON oi.product_id = p.product_id
-    WHERE oi.order_id = ?
+    WHERE oi.order_id = $order_id
 ";
-$stmt_items = sqlsrv_query($conn_read, $sql_items, [$order_id]);
+$stmt_items = sqlsrv_query($conn_read, $sql_items);
 
 $order_items = [];
 while ($row = sqlsrv_fetch_array($stmt_items, SQLSRV_FETCH_ASSOC)) {
