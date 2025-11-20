@@ -235,7 +235,7 @@ session_start();
             <a href="register.php">Customer Sign Up</a> |
             <a href="admin_login.php">Admin Log In</a> |
           <!--  <a href="add_users.php">Sign Up Automatically</a> | -->
-            <a href="display_users.php">View Registered Users</a> |
+            <!--  <a href="display_users.php">View Registered Users</a> |-->
           <!--  <a href="test_replication_lag.php">Test DB Replication</a> -->
         <?php endif; ?>
     </div>
@@ -264,6 +264,7 @@ session_start();
 
 </body>
 </html>
+
 
 
 
