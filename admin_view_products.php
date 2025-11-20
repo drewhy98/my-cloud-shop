@@ -131,7 +131,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 <div class="products-grid">
 
 <?php
-$sql = "SELECT product_id, name, price, image_url 
+$sql = "SELECT product_id, name, price, image_url, stock
         FROM products 
         ORDER BY created_at DESC";
 
@@ -146,16 +146,17 @@ if ($stmt === false) {
         $hasProducts = true;
         $img = !empty($row['image_url']) ? htmlspecialchars($row['image_url']) : "placeholder.png";
 ?>
-    <div class="product-card">
-        
-        <!-- EDIT ICON -->
-        <a class="edit-icon" href="admin_edit_product.php?id=<?= $row['product_id'] ?>">✏️</a>
+<div class="product-card">
+    
+    <!-- EDIT ICON -->
+    <a class="edit-icon" href="admin_edit_product.php?id=<?= $row['product_id'] ?>">✏️</a>
 
-        <img src="<?= $img ?>" alt="<?= htmlspecialchars($row['name']); ?>">
-        <h4><?= htmlspecialchars($row['name']); ?></h4>
-        <p>£<?= number_format($row['price'], 2); ?></p>
+    <img src="<?= $img ?>" alt="<?= htmlspecialchars($row['name']); ?>">
+    <h4><?= htmlspecialchars($row['name']); ?></h4>
+    <p>£<?= number_format($row['price'], 2); ?></p>
+    <p>Stock: <?= intval($row['stock']); ?></p>
+</div>
 
-    </div>
 <?php
     endwhile;
 
