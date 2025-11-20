@@ -113,6 +113,7 @@ require_once "db_read.php"; // <-- uses read-only replica
 </header>
 
 <nav>
+    <a href="index.php">Home</a>
     <a href="display_meat.php">Meat</a>
     <a href="display_veg.php">Vegetables</a>
     <a href="display_bakery.php">Bakery</a>
