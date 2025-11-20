@@ -1,5 +1,9 @@
 <?php 
 session_start(); 
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+    header("Location: admin_login.php?error=" . urlencode("Please log in as an admin."));
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
