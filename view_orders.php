@@ -33,9 +33,7 @@ th { background:#2e5d34; color:white; }
 </head>
 <body>
 
-<header>
-    <h1>My Orders</h1>
-</header>
+<?php include "header_nav.php"; ?>
 
 <div class="container">
 
