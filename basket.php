@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Query cart items first
+// Query cart items
 $sql = "
     SELECT c.cart_id, c.product_id, c.quantity, p.name, p.price, p.image_url
     FROM user_cart c
@@ -40,12 +40,6 @@ if ($stmt !== false) {
     <title>ShopSphere - Your Basket</title>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; margin:0; background:#fafafa; color:#333; line-height:1.6; }
-        header { background: #fff; border-bottom:1px solid #e0e0e0; padding:15px 40px; display:flex; justify-content:space-between; align-items:center; }
-        header h1 { color:#2e5d34; margin:0; }
-        .auth-links span { margin-right:12px; font-weight:bold; }
-        .logout-btn { background:#2e5d34; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:bold; }
-        nav { background:#f2f5f1; padding:12px 30px; text-align:center; }
-        nav a { margin:0 15px; text-decoration:none; color:#2e5d34; font-weight:600; }
         .total-pay { text-align:center; margin:20px 0; }
         .total-pay h2 { margin-bottom:10px; }
         .products-grid { max-width:1200px; margin:30px auto; display:grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap:25px; padding:0 20px; }
@@ -60,24 +54,7 @@ if ($stmt !== false) {
 </head>
 <body>
 
-<header>
-    <h1>ShopSphere</h1>
-    <div class="auth-links">
-        <span>Welcome, <?= htmlspecialchars($_SESSION['user_name']); ?></span>
-        <form method="post" action="logout.php" style="display:inline;">
-            <button class="logout-btn">Logout</button>
-        </form>
-        <a href="wishlist.php" class="btn" style="margin-left:10px;">Wishlist</a>
-        <a href="basket.php" class="btn" style="margin-left:10px;">Basket</a>
-    </div>
-</header>
-
-<nav>
-    <a href="index.php">Home</a>
-    <a href="display_meat.php">Meat</a>
-    <a href="display_veg.php">Vegetables</a>
-    <a href="display_bakery.php">Bakery</a>
-</nav>
+<?php include "header_nav.php"; ?> <!-- Include your reusable header/nav here -->
 
 <!-- Total Cost & Pay Now immediately under header/nav -->
 <div class="total-pay">
