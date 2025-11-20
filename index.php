@@ -228,6 +228,7 @@ session_start();
                 <button type="submit" class="logout-btn">Logout</button>
                 <a href="wishlist.php">View Wishlist</a> |
                 <a href="basket.php">View Basket</a> |
+                <a href="view_orders.php">View Orders</a> |
             </form>
         <?php else: ?>
             <a href="login.php">Log In</a> |
@@ -262,6 +263,7 @@ session_start();
 
 </body>
 </html>
+
 
 
 
