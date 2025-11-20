@@ -132,7 +132,6 @@ if ($stmt === false) {
         <p>£<?= number_format($row['price'], 2); ?></p>
 
         <form method="post" action="remove_from_wishlist.php">
-            onsubmit="setTimeout(() => window.location='wishlist.php', 300);">
             <input type="hidden" name="product_id" value="<?= $row['product_id']; ?>">
             <button class="btn">Remove from Wishlist</button>
         </form>
