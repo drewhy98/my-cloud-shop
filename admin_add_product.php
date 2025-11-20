@@ -1,32 +1,10 @@
 <?php
 session_start();
-require_once "db_write.php"; // admin needs write access
+require_once "db_write.php"; // admin write access
 
 // Ensure admin is logged in
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
     header("Location: admin_login.php?error=" . urlencode("Please log in as an admin."));
-    exit();
-}
-
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name']);
-    $price = floatval($_POST['price']);
-    $category = trim($_POST['category']); // now from select
-    $image_url = trim($_POST['image_url']);
-    $stock = intval($_POST['stock']);
-
-    $sql = "INSERT INTO products (name, price, category, created_at, image_url, stock) 
-            VALUES (?, ?, ?, GETDATE(), ?, ?)";
-    $params = [$name, $price, $category, $image_url, $stock];
-
-    $stmt = sqlsrv_query($conn_write, $sql, $params);
-
-    if ($stmt === false) {
-        die("Error adding product: " . print_r(sqlsrv_errors(), true));
-    }
-
-    header("Location: admin_display_products.php?msg=" . urlencode("Product added successfully."));
     exit();
 }
 ?>
@@ -69,7 +47,7 @@ form button:hover { background:#244928; }
 
 <div class="container">
     <h2>Add New Product</h2>
-    <form method="post" action="">
+    <form method="post" action="admin_process_add_product.php">
         <label for="name">Product Name</label>
         <input type="text" name="name" id="name" required>
 
@@ -78,7 +56,6 @@ form button:hover { background:#244928; }
 
         <label for="category">Category</label>
         <select name="category" id="category" required>
-            <option value="">-- Select Category --</option>
             <option value="meat">meat</option>
             <option value="veg">veg</option>
             <option value="bakery">bakery</option>
