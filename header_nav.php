@@ -16,6 +16,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
             <a href="wishlist.php" class="btn" style="margin-left:10px;">Wishlist</a>
             <a href="basket.php" class="btn" style="margin-left:10px;">Basket</a>
+            <a href="view_orders.php" class="btn" style="margin-left:10px;">View Orders</a>
+
         <?php else: ?>
             <a href="login.php" class="btn">Login</a>
         <?php endif; ?>
