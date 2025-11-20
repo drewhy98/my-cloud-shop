@@ -2,23 +2,20 @@
 session_start();
 require_once "db_write.php"; // writable DB
 
-// Make sure user is logged in
+// Ensure user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
 $user_id = $_SESSION['user_id'];
-$order_submitted = false;
-$order_id = null;
-$order_items = [];
-$total_amount = 0;
 
-// Handle form submission
+$error = "";
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $address = trim($_POST['address']);
-    $payment_method = trim($_POST['payment_method']); // NEW
+    $payment_method = trim($_POST['payment_method']);
 
     if (empty($address) || empty($payment_method)) {
         $error = "Please complete all fields.";
@@ -49,13 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "Your basket is empty.";
         } else {
 
-            // Insert order and capture ID
+            // Insert order
             $sql_order = "
                 INSERT INTO orders (user_id, total_amount, address, payment_method, status)
                 OUTPUT INSERTED.order_id
                 VALUES (?, ?, ?, ?, 'Pending');
             ";
-
             $params_order = [$user_id, $total_amount, $address, $payment_method];
             $stmt_order = sqlsrv_query($conn_write, $sql_order, $params_order);
 
@@ -66,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $row_order = sqlsrv_fetch_array($stmt_order, SQLSRV_FETCH_ASSOC);
             $order_id = $row_order['order_id'];
 
-            // Insert each item into order_items
+            // Insert order items
             foreach ($items as $item) {
                 $sql_item = "
                     INSERT INTO order_items (order_id, product_id, quantity, price)
@@ -79,8 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Clear basket
             sqlsrv_query($conn_write, "DELETE FROM user_cart WHERE user_id = ?", [$user_id]);
 
-            $order_items = $items;
-            $order_submitted = true;
+            // Redirect to confirmation
+            header("Location: checkout_confirm.php?order_id=" . $order_id);
+            exit();
         }
     }
 }
@@ -91,17 +88,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Order Confirmation - ShopSphere</title>
+<title>Checkout - ShopSphere</title>
 <style>
 body { font-family: Arial, sans-serif; background:#fafafa; margin:0; }
-h1, h2 { color:#2e5d34; }
-.container { max-width:800px; margin:30px auto; background:white; padding:20px; border-radius:8px; }
-table { width:100%; border-collapse: collapse; margin-top:15px; }
-th, td { border:1px solid #ccc; padding:10px; }
-th { background:#2e5d34; color:white; }
-.total { text-align:right; font-weight:bold; margin-top:10px; }
-.error { color:red; font-weight:bold; }
-footer { background:#f2f5f1; padding:15px; text-align:center; }
+.container { max-width:600px; margin:50px auto; background:white; padding:20px; border-radius:8px; }
+h1 { color:#2e5d34; }
+label { display:block; margin-top:10px; font-weight:bold; }
+input[type=text], select { width:100%; padding:8px; margin-top:5px; border:1px solid #ccc; border-radius:4px; }
+button { margin-top:15px; padding:10px 15px; background:#2e5d34; color:white; border:none; border-radius:4px; cursor:pointer; }
+button:hover { background:#244928; }
+.error { color:red; font-weight:bold; margin-top:10px; }
 </style>
 </head>
 <body>
@@ -109,44 +105,24 @@ footer { background:#f2f5f1; padding:15px; text-align:center; }
 <?php include "header_nav.php"; ?>
 
 <div class="container">
+<h1>Checkout</h1>
 
-<?php if ($order_submitted): ?>
+<?php if (!empty($error)) echo "<p class='error'>$error</p>"; ?>
 
-    <h2>Thank you for your order!</h2>
-    <p>Your Order ID is: <strong><?= $order_id ?></strong></p>
-    <p>Payment Method: <strong><?= htmlspecialchars($payment_method) ?></strong></p>
+<form method="post" action="">
+    <label for="address">Delivery Address:</label>
+    <input type="text" name="address" id="address" required>
 
-    <h3>Order Summary</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Price (£)</th>
-                <th>Qty</th>
-                <th>Subtotal (£)</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($order_items as $item): ?>
-            <tr>
-                <td><?= htmlspecialchars($item['name']) ?></td>
-                <td><?= number_format($item['price'], 2) ?></td>
-                <td><?= $item['quantity'] ?></td>
-                <td><?= number_format($item['price'] * $item['quantity'], 2) ?></td>
-            </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
+    <label for="payment_method">Payment Method:</label>
+    <select name="payment_method" id="payment_method" required>
+        <option value="">Select Payment Method</option>
+        <option value="Card">Card</option>
+        <option value="PayPal">PayPal</option>
+        <option value="Cash on Delivery">Cash on Delivery</option>
+    </select>
 
-    <div class="total">Total Paid: £<?= number_format($total_amount, 2) ?></div>
-
-<?php else: ?>
-
-    <h2>Payment Failed</h2>
-    <?php if (!empty($error)) echo "<p class='error'>$error</p>"; ?>
-
-<?php endif; ?>
-
+    <button type="submit">Submit Order</button>
+</form>
 </div>
 
 <footer>&copy; 2025 ShopSphere | Fresh, Local & Healthy</footer>
