@@ -72,7 +72,7 @@ SELECT o.order_id, o.user_id, u.name AS customer_name,
        o.total_amount, o.address, o.status, o.created_at, 
        o.payment_method
 FROM orders o
-LEFT JOIN users u ON o.user_id = u.id
+LEFT JOIN shopusers u ON o.user_id = u.id
 ORDER BY o.created_at DESC";
 
 $stmt_orders = sqlsrv_query($conn_write, $sql_orders);
