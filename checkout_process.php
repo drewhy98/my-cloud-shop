@@ -9,15 +9,15 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Validate input
 $address = trim($_POST['address'] ?? "");
 $payment_method = trim($_POST['payment_method'] ?? "");
 
+// Server-side validation
 if (empty($address) || empty($payment_method)) {
-    die("Missing delivery address or payment method. <a href='checkout.php'>Go back</a>");
+    die("Delivery address and payment method are required. <a href='checkout.php'>Go back</a>");
 }
 
-// Fetch basket items
+// Get basket items
 $sql = "
     SELECT c.product_id, c.quantity, p.price, p.name
     FROM user_cart c
@@ -40,25 +40,25 @@ if (empty($items)) {
     die("Your basket is empty. <a href='basket.php'>Go back</a>");
 }
 
-// Insert order
+// Insert order with payment method
 $sql_order = "
-    INSERT INTO orders (user_id, total_amount, address, payment_method)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO orders (user_id, total_amount, address, payment_method, status)
+    VALUES (?, ?, ?, ?, 'Pending')
 ";
 $params_order = [$user_id, $total_amount, $address, $payment_method];
 $stmt_order = sqlsrv_query($conn_write, $sql_order, $params_order);
 
 if ($stmt_order === false) {
-    die("Error creating order.");
+    die("Error creating order: " . print_r(sqlsrv_errors(), true));
 }
 
-// Get order ID
+// Get order_id
 $sql_id = "SELECT SCOPE_IDENTITY() AS order_id";
 $stmt_id = sqlsrv_query($conn_write, $sql_id);
 $order_id = sqlsrv_fetch_array($stmt_id, SQLSRV_FETCH_ASSOC)['order_id'];
 sqlsrv_free_stmt($stmt_id);
 
-// Insert order items
+// Insert items into order_items
 foreach ($items as $item) {
     $sql_item = "
         INSERT INTO order_items (order_id, product_id, quantity, price)
@@ -85,14 +85,14 @@ sqlsrv_close($conn_write);
 <style>
 body { font-family: Arial; background:#fafafa; margin:0; }
 .container { max-width:700px; margin:30px auto; background:white; padding:20px; border-radius:8px; }
-table { width:100%; border-collapse: collapse; margin-top:20px; }
-td, th { border: 1px solid #ddd; padding: 8px; }
+table { width:100%; border-collapse:collapse; margin-top:20px; }
+td, th { border:1px solid #ddd; padding:8px; }
 th { background:#2e5d34; color:white; }
 .total { text-align:right; font-weight:bold; margin-top:20px; }
 </style>
 </head>
-<body>
 
+<body>
 <div class="container">
     <h2>Thank you for your order!</h2>
     <p>Your Order ID: <strong><?= $order_id ?></strong></p>
@@ -113,8 +113,8 @@ th { background:#2e5d34; color:white; }
 
     <div class="total">Total Paid: £<?= number_format($total_amount, 2) ?></div>
 
-    <p>Your payment method: <strong><?= htmlspecialchars($payment_method) ?></strong></p>
+    <p><strong>Payment Method:</strong> <?= htmlspecialchars($payment_method) ?></p>
+    <p><strong>Delivery Address:</strong> <?= nl2br(htmlspecialchars($address)) ?></p>
 </div>
-
 </body>
 </html>
