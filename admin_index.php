@@ -171,9 +171,8 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 </header>
 
 <nav>
-    <a href="display_products.php">View All Products</a>
-    <a href="display_products.php">Add Products</a>
-    <a href="view_orders.php">View Orders</a>
+    <a href="admin_view_products.php">Manage Products</a>
+    <a href="admin_view_orders.php">Manage Orders</a>
 </nav>
 
 <section class="featured">
