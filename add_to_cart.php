@@ -10,10 +10,17 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Ensure product_id and quantity are provided
-if (!isset($_POST['product_id']) || empty($_POST['product_id']) || 
-    !isset($_POST['quantity']) || empty($_POST['quantity'])) {
-    die("Invalid request. Product or quantity not specified.");
+// Ensure product_id and quantity are provided - setting default to 1 
+if (!isset($_POST['product_id']) || empty($_POST['product_id'])) {
+    die("Invalid request. Product not specified.");
+}
+
+$product_id = (int) $_POST['product_id'];
+
+// Default quantity to 1 if missing or invalid
+$quantity = isset($_POST['quantity']) ? (int) $_POST['quantity'] : 1;
+if ($quantity < 1) {
+    $quantity = 1;
 }
 
 $product_id = (int) $_POST['product_id'];
