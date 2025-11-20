@@ -180,7 +180,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
 <section class="featured">
     <h2>Admin Dashboard</h2>
-    <img src="https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg"
+    <img src="https://www.groovypost.com/wp-content/uploads/2017/12/sign-in-security-feature.jpg"
          alt="admin">
 </section>
 
