@@ -10,7 +10,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
 // Get product ID
 if (!isset($_GET['id'])) {
-    header("Location: admin_display_products.php?error=" . urlencode("No product selected."));
+    header("Location: admin_view_products.php?error=" . urlencode("No product selected."));
     exit();
 }
 
@@ -45,7 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Failed to update product: " . print_r(sqlsrv_errors(), true));
     }
 
-    header("Location: admin_display_products.php?msg=" . urlencode("Product updated successfully."));
+    // Redirect back to the product list with success message
+    header("Location: admin_view_products.php?msg=" . urlencode("Product updated successfully."));
     exit();
 }
 ?>
@@ -83,7 +84,7 @@ form button:hover { background:#244928; }
 <nav>
     <a href="admin_index.php">Dashboard</a>
     <a href="admin_view_orders.php">Manage Orders</a>
-    <a href="admin_display_products.php">Manage Products</a>
+    <a href="admin_view_product.php">Manage Products</a>
 </nav>
 
 <div class="container">
