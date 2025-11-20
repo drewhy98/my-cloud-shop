@@ -83,13 +83,7 @@ $user_id = $_SESSION['user_id'];
 </head>
 <body>
 
-<header>
-    <h1>ShopSphere</h1>
-    <div>
-        <span>Welcome, <?= htmlspecialchars($_SESSION['user_name']); ?></span>
-        <form method="post" action="logout.php" style="display:inline;">
-            <button class="btn">Logout</button>
-        </form>
+<?php include "header_nav.php"; ?>
     </div>
 </header>
 
