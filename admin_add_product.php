@@ -12,7 +12,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name']);
     $price = floatval($_POST['price']);
-    $category = trim($_POST['category']);
+    $category = trim($_POST['category']); // now from select
     $image_url = trim($_POST['image_url']);
     $stock = intval($_POST['stock']);
 
@@ -47,7 +47,7 @@ nav { background:#f2f5f1; display:flex; justify-content:center; gap:30px; flex-w
 nav a { text-decoration:none; color:#2e5d34; font-weight:bold; }
 .container { max-width:600px; margin:30px auto; background:white; padding:20px; border-radius:8px; }
 form label { display:block; margin-top:10px; font-weight:bold; }
-form input { width:100%; padding:8px; margin-top:5px; border:1px solid #ccc; border-radius:4px; }
+form input, form select { width:100%; padding:8px; margin-top:5px; border:1px solid #ccc; border-radius:4px; }
 form button { margin-top:15px; padding:8px 14px; background:#2e5d34; color:white; border:none; border-radius:4px; cursor:pointer; }
 form button:hover { background:#244928; }
 </style>
@@ -77,7 +77,12 @@ form button:hover { background:#244928; }
         <input type="number" name="price" id="price" step="0.01" required>
 
         <label for="category">Category</label>
-        <input type="text" name="category" id="category" required>
+        <select name="category" id="category" required>
+            <option value="">-- Select Category --</option>
+            <option value="meat">meat</option>
+            <option value="veg">veg</option>
+            <option value="bakery">bakery</option>
+        </select>
 
         <label for="image_url">Image URL</label>
         <input type="text" name="image_url" id="image_url">
