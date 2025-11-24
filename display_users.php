@@ -158,7 +158,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
         <?php endif; ?>
 
         <div>
-            <a href="index.php" class="btn">Home</a>
+            <a href="admin_index.php" class="btn">Home</a>
         </div>
     </div>
 
