@@ -1,57 +1,47 @@
 <?php
 session_start();
 
-// Database connection settings
-$serverName = "tcp:drewcardiffmet.database.windows.net,1433";
-$connectionOptions = array(
-    "Database" => "myDatabase",
-    "Uid" => "myadmin",
-    "PWD" => "Abcdefgh0!",
-    "Encrypt" => 1,
-    "TrustServerCertificate" => 0
-);
+// Use read-only database connection for admin login
+require_once "db_read.php";  // provides $conn_read
 
-// Form submitted?
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
+    $email    = trim($_POST['email'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
+    // Basic validation
     if (empty($email) || empty($password)) {
         header("Location: admin_login.php?error=" . urlencode("Please fill in all fields."));
         exit();
     }
 
-    // Connect
-    $conn = sqlsrv_connect($serverName, $connectionOptions);
+    $conn = $conn_read;
 
     if (!$conn) {
-        header("Location: admin_login.php?error=" . urlencode("Database connection error."));
+        header("Location: admin_login.php?error=" . urlencode("Database connection failed."));
         exit();
     }
 
     // Fetch admin by email
-    $sql = "SELECT * FROM adminusers WHERE email = ?";
-    $stmt = sqlsrv_query($conn, $sql, array($email));
+    $sql  = "SELECT id, name, email, password FROM adminusers WHERE email = ?";
+    $stmt = sqlsrv_query($conn, $sql, [$email]);
 
     if ($stmt === false) {
-        header("Location: admin_login.php?error=" . urlencode("Query failure."));
+        header("Location: admin_login.php?error=" . urlencode("Database query failed."));
         exit();
     }
 
     $admin = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 
     if ($admin) {
-
         if (password_verify($password, $admin['password'])) {
 
-            // Create admin session
+            // Set admin session
             $_SESSION['admin_logged_in'] = true;
-            $_SESSION['admin_id'] = $admin['id'];
-            $_SESSION['admin_name'] = $admin['name'];
-            $_SESSION['admin_email'] = $admin['email'];
+            $_SESSION['admin_id']        = $admin['id'];
+            $_SESSION['admin_name']      = $admin['name'];
+            $_SESSION['admin_email']     = $admin['email'];
 
-            // Redirect to admin index
             header("Location: admin_index.php");
             exit();
 
@@ -59,16 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header("Location: admin_login.php?error=" . urlencode("Incorrect password."));
             exit();
         }
-
     } else {
         header("Location: admin_login.php?error=" . urlencode("Admin not found."));
         exit();
     }
 
-    sqlsrv_free_stmt($stmt);
-    sqlsrv_close($conn);
-
 } else {
+    // Prevent direct access
     header("Location: admin_login.php");
     exit();
 }
