@@ -1,31 +1,26 @@
 <?php
-// Database connection
-$serverName = "tcp:drewcardiffmet-replica.database.windows.net,1433";
-$connectionOptions = array(
-    "Database" => "myDatabase",
-    "Uid" => "myadmin", 
-    "PWD" => "Abcdefgh0!",
-    "Encrypt" => 1,
-    "TrustServerCertificate" => 0
-);
+// =====================================================
+// ShopSphere - Display Registered Users
+// =====================================================
 
-// Connect to database
-$conn = sqlsrv_connect($serverName, $connectionOptions);
+// Use read-only database
+require_once "db_read.php"; // provides $conn_read
+$conn = $conn_read;
 
 if (!$conn) {
-    die("Connection failed: " . print_r(sqlsrv_errors(), true));
+    die("Database connection failed.");
 }
 
-// Get ALL registered users
-$sql = "SELECT name, email, password, created_at FROM shopusers ORDER BY created_at DESC";
+// Get all registered users
+$sql  = "SELECT name, email, password, created_at FROM shopusers ORDER BY created_at DESC";
 $stmt = sqlsrv_query($conn, $sql);
 
 if ($stmt === false) {
     die("Query failed: " . print_r(sqlsrv_errors(), true));
 }
 
-// Fetch all users into an array
-$users = array();
+// Fetch all users
+$users = [];
 while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
     $users[] = $row;
 }
@@ -36,11 +31,11 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Successful</title>
+    <title>Registered Users</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
             background-color: #f0f8f0;
@@ -57,19 +52,26 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             font-size: 48px;
             margin-bottom: 20px;
         }
+        .user-count {
+            background: #e8f5e8;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+        }
         .all-users {
             background: #f9f9f9;
             padding: 20px;
             margin: 20px 0;
             border-radius: 5px;
-            text-align: left;
             max-height: 400px;
             overflow-y: auto;
         }
         .all-users h3 {
-            color: #333;
-            margin-top: 0;
             text-align: center;
+            margin-top: 0;
+            color: #333;
         }
         .user-table {
             width: 100%;
@@ -96,14 +98,6 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .user-count {
-            background: #e8f5e8;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-            text-align: center;
-            font-weight: bold;
-        }
         .btn {
             display: inline-block;
             background-color: #4CAF50;
@@ -113,9 +107,6 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             border-radius: 5px;
             margin: 5px;
         }
-        .btn-secondary {
-            background-color: #666;
-        }
     </style>
 </head>
 <body>
@@ -123,9 +114,9 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
         <div class="success-icon">✓</div>
         <h1>List of Registered Users</h1>
         <div class="user-count">
-            Total Registered Users: <?php echo count($users); ?>
+            Total Registered Users: <?= count($users) ?>
         </div>
-        
+
         <?php if (count($users) > 0): ?>
             <div class="all-users">
                 <h3>All Registered Users (Newest First)</h3>
@@ -141,16 +132,13 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
                     <tbody>
                         <?php foreach ($users as $user): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($user['name']); ?></td>
-                                <td><?php echo htmlspecialchars($user['email']); ?></td>
-                                <td class="password-hash" title="<?php echo htmlspecialchars($user['password']); ?>">
-                                    <?php 
-                                    // Show first 20 characters of hash
-                                    echo htmlspecialchars(substr($user['password'], 0, 20) . '...'); 
-                                    ?>
+                                <td><?= htmlspecialchars($user['name']) ?></td>
+                                <td><?= htmlspecialchars($user['email']) ?></td>
+                                <td class="password-hash" title="<?= htmlspecialchars($user['password']) ?>">
+                                    <?= htmlspecialchars(substr($user['password'], 0, 20) . '...') ?>
                                 </td>
                                 <td>
-                                    <?php 
+                                    <?php
                                     if ($user['created_at'] instanceof DateTime) {
                                         echo $user['created_at']->format('Y-m-d H:i:s');
                                     } else {
@@ -168,16 +156,16 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
                 No users found in the database.
             </div>
         <?php endif; ?>
-        
+
         <div>
             <a href="index.php" class="btn">Home</a>
         </div>
     </div>
 
-    <?php
-    // Clean up
-    sqlsrv_free_stmt($stmt);
-    sqlsrv_close($conn);
-    ?>
+<?php
+// Clean up
+sqlsrv_free_stmt($stmt);
+sqlsrv_close($conn);
+?>
 </body>
 </html>
