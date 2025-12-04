@@ -175,7 +175,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     <a href="admin_view_orders.php">Manage Orders</a>
     <a href="add_users.php">Sign Customers Up Automatically</a>
     <a href="display_users.php">View Registered Customers</a> |
-    <!--  <a href="test_replication_lag.php">Test DB Replication</a> -->
+ <a href="test_replication_lag.php">Test DB Replication</a>
 </nav>
 
 <section class="featured">
